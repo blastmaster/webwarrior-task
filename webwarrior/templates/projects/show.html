@@ -1,0 +1,35 @@
+
+<div id="listing">
+  <table class="table table-striped table-hover table-sortable">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Due</th>
+        <th>Tags</th>
+        <th>Priority</th>
+        <th class="no-sort"></th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        {% if 'active' in task %}
+            <tr class="{{ colorize_date(task['due']) }}">
+        {% endif %}
+        <td>{{ task.description }}</td>
+        {% if 'due' in task %}
+            <td>{{ format_date(task['due']) }}</td>
+        {% endif %}
+        {% if 'tags' in task %}
+            <td>{{ format_tags(task['tags']) }}</td>
+        {% endif %}
+        {% if 'priority' in task %}
+            <td>{{ task['priority'] }}</td>
+        {% endif %}
+        {% if 'active' in task %}
+            <td>{{ crud_links(task) }}</td>
+        {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>

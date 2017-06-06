@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block tasks %}
+<div id="listing">
+    <table class="table table-striped table-hover table-sortable">
+      <thead>
+          <tr>
+          {% if status == 'pending' %}
+            <th class="no-sort"></th>
+          {% endif %}
+          <th> Description</th>
+          <th>Project</th>
+          <th>Due</th>
+          {% if status == 'waiting' %}
+            <th>Hidden until</th>
+          {% endif %}
+          {% if status == 'completed' %}
+            <th>Completed on</th>
+          {% endif %}
+          {% if status == 'deleted' %}
+            <th>Deleted on</th>
+          {% endif %}
+          <th>Tags</th>
+          <th data-sort-map='{"H": 0, "M": 1, "": 2, "L": 3}'>Priority</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for task in tasks %}
+          {% if 'active' in task %}
+            <tr class="{{ coloraize_date(task['due']) }}" >
+          {% else %}
+            <tr>
+          {% endif %}
+          {% if task['status'] == 'pending' %}
+            <td><input type="checkbox" class="complete" data-task-id="{{ task['uuid'] }}" /></td>
+          {% endif %}
+          <td>
+              {{ task.description }}
+          </td>
+
+          {#
+          <!--<td><a href="{{ url_for("/projects/" + {{task['project']}} ) }}"> {{ task['project'] }} </a></td>-->
+          #}
+
+          {% if 'due' in task %}
+              <td> {{ task['due'] }} </td>
+          {% endif %}
+
+          {% if task['status'] == 'waiting' %}
+              <td>  {{ task['wait'] }} </td>
+          {% else %}
+              <td> {{ task['end'] }} </td>
+          {% endif %}
+
+          {% if 'tags' in task %}
+          {#
+              <!--<td> {{ format_tags(task['tags'])  }} </td>-->
+          #}
+          {% endif %}
+
+          {% if 'priority' in task %}
+              <td> {{ task['priority'] }} </td>
+          {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}
